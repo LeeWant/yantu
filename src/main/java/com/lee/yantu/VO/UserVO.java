@@ -20,6 +20,8 @@ public class UserVO {
 
     private String sign;
 
+    private Integer creditScore;
+
     private String description;
 
     private Integer joinId;

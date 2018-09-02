@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: Yoosure
+    password: Yoosure759.com
+    url: jdbc:mysql://localhost:3306/yantu?characterEncodng=utf-8&useSSL=false
+  jpa:
+    show-sql: true
+
+my:
+  headPath: /home/tomcat/apache-tomcat-8.5.8/webapps/yantu/WEB-INF/classes/static/user_head/
+  imgPath: /home/tomcat/apache-tomcat-8.5.8/webapps/yantu/WEB-INF/classes/static/img/

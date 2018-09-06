@@ -3,15 +3,14 @@ package com.lee.yantu.service.Impl;
 import com.lee.yantu.Entity.History;
 import com.lee.yantu.Entity.User;
 import com.lee.yantu.Entity.Yoosure;
-import com.lee.yantu.repository.EvaluateRepository;
-import com.lee.yantu.repository.HistoryRepository;
-import com.lee.yantu.repository.UserRepository;
-import com.lee.yantu.repository.YoosureRepository;
+import com.lee.yantu.VO.YoosureSimpleVO;
+import com.lee.yantu.repository.*;
 import com.lee.yantu.service.UserService;
 import com.lee.yantu.enums.UserEnum;
 import com.lee.yantu.exception.ResultException;
 import com.lee.yantu.util.CheckUtil;
 import com.lee.yantu.util.UploadUtil;
+import com.lee.yantu.util.VOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private HistoryRepository historyRepository;
     @Autowired
     private YoosureRepository yoosureRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public User findOne(Integer id) {
@@ -167,7 +168,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     /**
      * 查找用户完成的yoosure
      *
@@ -175,13 +175,26 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<Yoosure> findMyYoosures(Integer userId) {
-        List<History> histories = historyRepository.findAllByUserIdAndIsFinish(userId, 1);
-        List<Yoosure> yoosures = new ArrayList<>();
-        for(History history : histories){
-            Yoosure yoosure = yoosureRepository.findOne(history.getYoosureId());
-            yoosures.add(yoosure);
+    public List<YoosureSimpleVO> findMyYoosures(Integer userId) {
+        Yoosure yoosure;
+        User user = userRepository.findOne(userId);
+        //确定用户存在
+        if(null == user){
+            throw new ResultException(UserEnum.USER_NOT_FOUND);
         }
-        return yoosures;
+        //查找用户所有已结束的游学
+        List<History> histories = historyRepository.findAllByUserIdAndIsFinish(userId, 1);
+        List<YoosureSimpleVO> yoosureSimpleVOS = new ArrayList<>();
+        //通过历史记录查找游学贴
+        for (History history : histories) {
+            yoosure = yoosureRepository.findOne(history.getYoosureId());
+            YoosureSimpleVO yoosureSimpleVO = VOUtil.getYoosureSimpleVO(yoosure,tagRepository,userRepository);
+            //如果没有评价
+            if(0 == history.getEvaluateId()){
+                yoosureSimpleVO.setEvaluateId(0);
+            }else yoosureSimpleVO.setEvaluateId(history.getEvaluateId());
+            yoosureSimpleVOS.add(yoosureSimpleVO);
+        }
+        return yoosureSimpleVOS;
     }
 }

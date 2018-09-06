@@ -2,6 +2,7 @@ package com.lee.yantu.service;
 
 import com.lee.yantu.Entity.User;
 import com.lee.yantu.Entity.Yoosure;
+import com.lee.yantu.VO.YoosureSimpleVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public interface UserService {
 
     User modifyPassword(Integer userId,String oldPassword,String newPassword);
 
-    List<Yoosure> findMyYoosures(Integer userId);
+    List<YoosureSimpleVO> findMyYoosures(Integer userId);
 }

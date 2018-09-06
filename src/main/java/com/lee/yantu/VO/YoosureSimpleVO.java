@@ -22,6 +22,8 @@ public class YoosureSimpleVO {
     private BigDecimal cost;
 
     private String title;
+    /** 仅用于用户查看自己的游学模块，是否已进行评价 */
+    private Integer evaluateId;
 
     private List<TagVO> tagVOS;
 }

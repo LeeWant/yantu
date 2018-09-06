@@ -107,32 +107,6 @@ public class UserController {
      */
     @GetMapping("/get/yoosures/uid-{userId}")
     public Result getYoosures(@PathVariable("userId") Integer userId) {
-        List<Yoosure> yoosures = new ArrayList<>();
-        if (userId != null) {
-           yoosures = userService.findMyYoosures(userId);
-        }
-        //封装数据
-        List<Tag> tags;
-        List<YoosureSimpleVO> yoosureSimpleVOS = new ArrayList<>();
-        for (Yoosure yoosure : yoosures) {
-            //封装标签
-            tags = tagService.findAllByYoosureId(yoosure.getYoosureId());
-            List<TagVO> tagVOS = new ArrayList<>();
-            for (Tag tag : tags) {
-                TagVO tagVO = new TagVO();
-                BeanUtils.copyProperties(tag, tagVO);
-                tagVOS.add(tagVO);
-            }
-            YoosureSimpleVO yoosureSimpleVO = new YoosureSimpleVO();
-            //封装user头像
-            yoosureSimpleVO.setHeadImg(userService.findOne(yoosure.getUserId()).getHeadImg());
-            //封装tagVOS
-            yoosureSimpleVO.setTagVOS(tagVOS);
-            //复制yoosure
-            BeanUtils.copyProperties(yoosure, yoosureSimpleVO);
-            //添加进yoosureSimpleVOS
-            yoosureSimpleVOS.add(yoosureSimpleVO);
-        }
-        return ResultUtil.success(yoosureSimpleVOS);
+        return ResultUtil.success(userService.findMyYoosures(userId));
     }
 }

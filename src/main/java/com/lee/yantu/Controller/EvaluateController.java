@@ -7,9 +7,7 @@ import com.lee.yantu.service.EvaluateService;
 import com.lee.yantu.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,6 +26,10 @@ public class EvaluateController {
         return ResultUtil.success(evaluateService.add(evaluate,bindingResult));
     }
 
+    @GetMapping("/get/{evaluateId}")
+    public Result get(@PathVariable("evaluateId") Integer evaluateId){
+        return ResultUtil.success(evaluateService.getOne(evaluateId));
+    }
 
 
 }

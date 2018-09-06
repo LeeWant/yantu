@@ -219,6 +219,8 @@ public class YoosureServiceImpl implements YoosureService {
                             //修改历史纪录的flag
                             history.setOpFlag(0);
                             historyRepository.save(history);
+                            //每次退出-10信用分
+                            user.setCreditScore(user.getCreditScore()-10);
                             userRepository.save(user);
                             yoosureRepository.save(yoosure);
                         }

@@ -21,13 +21,19 @@ public class History {
     private Integer yoosureId;
 
     private Date creDate;
-
-    private Integer isFinish;
+    /**
+     * 是否结束，默认值为0
+     */
+    private Integer isFinish = 0;
 
     /**
-     * 用户进行状态，0(用户不在该yoosure内)，1为默认值正在进行
+     * 用户进行状态，0(用户不在该yoosure内,曾经加入后退出)，1为默认值正在进行
      */
     private Integer opFlag = 1;
+    /**
+     * 是否评价，默认值为0，游学贴结束后(isFinish = 1)才能评价
+     */
+    private Integer evaluateId = 0;
 
     public History() {
     }

@@ -8,6 +8,8 @@ spring:
     show-sql: true
 
 my:
-  headPath: C:/Users/Lee/Desktop/test/
+  path: C:/Users/Lee/Desktop/test
+  headPath: ${my.path}
   imgPath: WEB-INF/classes/static/img/
+  bannerPath: ${my.path}/banner
 

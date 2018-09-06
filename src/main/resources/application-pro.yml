@@ -8,5 +8,7 @@ spring:
     show-sql: true
 
 my:
-  headPath: /home/tomcat/apache-tomcat-8.5.8/webapps/yantu/WEB-INF/classes/static/user_head/
-  imgPath: /home/tomcat/apache-tomcat-8.5.8/webapps/yantu/WEB-INF/classes/static/img/
+  path: /home/tomcat/apache-tomcat-8.5.8/webapps/yantu/WEB-INF/classes/static
+  headPath: ${my.path}/user_head
+  imgPath: ${my.path}/img
+  bannerPath: ${my.path}/img/banner

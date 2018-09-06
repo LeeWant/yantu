@@ -30,8 +30,8 @@ public class UploadUtil {
             throw new ResultException(SystemEnum.UPLOAD_TOO_BIG);
         try {
             //为图片重命名
-            newFileName = UUID.randomUUID()+oldFileName.substring(oldFileName.lastIndexOf("."));
-            File desFile = new File(imgPath + newFileName);
+            newFileName = UUID.randomUUID() + oldFileName.substring(oldFileName.lastIndexOf("."));
+            File desFile = new File(imgPath + File.separator + newFileName);
             //如果目录不存在则创建新目录
             if (!desFile.getParentFile().exists()) {
                 desFile.getParentFile().mkdirs();

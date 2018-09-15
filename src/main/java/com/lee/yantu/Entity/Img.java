@@ -24,6 +24,13 @@ public class Img {
     /** 2表示游学 3表示手账 */
     private Integer flag;
 
+    public Img(Integer journalId, Integer yoosureId, String imgPath, Integer flag) {
+        this.journalId = journalId;
+        this.yoosureId = yoosureId;
+        this.imgPath = imgPath;
+        this.flag = flag;
+    }
+
     public Img() {
     }
 }

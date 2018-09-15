@@ -23,7 +23,7 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public Banner addBanner(MultipartFile file, String link, Integer isOnline) {
-        String imgName = UploadUtil.uploadFile(file, bannerPath);
+        String imgName = UploadUtil.uploadImg(file, bannerPath);
         Banner banner = new Banner();
         banner.setImg(imgName);
         banner.setLink(link);

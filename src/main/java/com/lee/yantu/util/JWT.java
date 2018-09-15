@@ -36,7 +36,7 @@ public class JWT {
             claims.put(EXP, System.currentTimeMillis() + maxAge);
             return signer.sign(claims);
         } catch (Exception e) {
-            throw new ResultException(SystemEnum.UNKNOWN_ERROR);
+            throw new ResultException(SystemEnum.TOKEN_ERR);
         }
     }
 
@@ -64,9 +64,11 @@ public class JWT {
                     ObjectMapper objectMapper = new ObjectMapper();
                     return objectMapper.readValue(json, classT);
                 }else throw new ResultException(SystemEnum.TOKEN_EXP);
-            }else throw new ResultException(SystemEnum.TOKEN_ERR);
-        } catch (Exception e) {
-            throw new ResultException(SystemEnum.TOKEN_ERR);
+            }else throw new ResultException(SystemEnum.TOKEN_MISS);
+        } catch (ResultException e) {
+            throw e;
+        } catch (Exception e){
+            throw new ResultException(SystemEnum.TOKEN_ERR,e.getMessage());
         }
     }
 

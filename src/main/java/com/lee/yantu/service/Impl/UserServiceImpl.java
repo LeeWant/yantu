@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public User modifyInfo(User user, MultipartFile file) {
         //更新头像
         if (null != file) {
-            user.setHeadImg(UploadUtil.uploadFile(file, headPath));
+            user.setHeadImg(UploadUtil.uploadImg(file, headPath));
         }
         //修改基本信息
         User newUser = updateBaseInfo(user);

@@ -27,7 +27,7 @@ public class ExceptionHandle {
             return ResultUtil.error(resultException.getCode(),resultException.getMessage());
         }else {
             logger.error("【系统异常】",e);
-            return ResultUtil.error(SystemEnum.UNKNOWN_ERROR);
+            return ResultUtil.error(-1,e.getMessage());
         }
     }
 }

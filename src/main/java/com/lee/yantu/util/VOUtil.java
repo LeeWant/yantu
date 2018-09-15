@@ -1,13 +1,8 @@
 package com.lee.yantu.util;
 
-import com.lee.yantu.Entity.Tag;
-import com.lee.yantu.Entity.User;
-import com.lee.yantu.Entity.UserDefinedTag;
-import com.lee.yantu.Entity.Yoosure;
-import com.lee.yantu.VO.PageVO;
-import com.lee.yantu.VO.TagVO;
-import com.lee.yantu.VO.UserVO;
-import com.lee.yantu.VO.YoosureSimpleVO;
+import com.lee.yantu.Entity.*;
+import com.lee.yantu.VO.*;
+import com.lee.yantu.repository.CommentRepository;
 import com.lee.yantu.repository.TagRepository;
 import com.lee.yantu.repository.UserRepository;
 import com.lee.yantu.service.SearchService;
@@ -18,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +59,14 @@ public class VOUtil {
         return pageVO;
     }
 
+    /**
+     * 封装一个简单Yoosure视图
+     *
+     * @param yoosure
+     * @param tagRepository
+     * @param userRepository
+     * @return
+     */
     public static YoosureSimpleVO getYoosureSimpleVO(Yoosure yoosure, TagRepository tagRepository, UserRepository userRepository) {
         List<Tag> tags;
         //封装标签
@@ -84,7 +88,42 @@ public class VOUtil {
         return yoosureSimpleVO;
     }
 
+    /**
+     * 封装一个journalVO
+     * @param journal
+     * @param tagRepository
+     * @param commentRepository
+     * @param userRepository
+     * @return
+     */
+    public static JournalVO getJournalVO(Journal journal, TagRepository tagRepository, CommentRepository commentRepository, UserRepository userRepository) {
+        User user = userRepository.findOne(journal.getUserId());
+        JournalVO journalVO = new JournalVO();
+        //封装标签
+        List<TagVO> tagVOS = new ArrayList<>();
+        List<Tag> tags = tagRepository.findAllByJournalId(journal.getJournalId());
+        for (Tag tag : tags) {
+            TagVO tagVO = new TagVO();
+            BeanUtils.copyProperties(tag, tagVO);
+            tagVOS.add(tagVO);
+        }
+        //封装VO
+        BeanUtils.copyProperties(journal,journalVO);
+        //评论数
+        journalVO.setCommentNum(commentRepository.countCommentByJournalIdAndIsDelete(journal.getJournalId(),0));
+        journalVO.setTagVOS(tagVOS);
+        journalVO.setUserName(user.getNickName());
+        journalVO.setUrl(journal.getContent());
+        return journalVO;
+    }
 
+    /**
+     * 封装一个用户pageVO
+     *
+     * @param users
+     * @param udtService
+     * @return
+     */
     public static PageVO getUserPageVO(Page<User> users, UserDefinedTagService udtService) {
         List<UserVO> userVOS = new ArrayList<>();
         for (User user : users) {

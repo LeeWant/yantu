@@ -30,7 +30,7 @@ public class ImgServiceImpl implements ImgService {
             }
             newImg.setYoosureId(id);
             newImg.setFlag(2);
-            newImg.setImgPath(UploadUtil.uploadFile(img, path));
+            newImg.setImgPath(UploadUtil.uploadImg(img, path));
             imgRepository.save(newImg);
         } else if (flag == 3) {
             if (imgRepository.findAllByYoosureId(id).size() > 4) {
@@ -38,7 +38,7 @@ public class ImgServiceImpl implements ImgService {
             }
             newImg.setJournalId(id);
             newImg.setFlag(3);
-            newImg.setImgPath(UploadUtil.uploadFile(img, path));
+            newImg.setImgPath(UploadUtil.uploadImg(img, path));
             imgRepository.save(newImg);
         } else throw new ResultException(SystemEnum.NO_THIS_FLAG);
         //返回图片名称

@@ -12,3 +12,5 @@ my:
   headPath: ${my.path}/user_head
   imgPath: ${my.path}/img
   bannerPath: ${my.path}/img/banner
+  htmlPath: ${my.path}/htfile
+

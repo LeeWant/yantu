@@ -6,6 +6,7 @@ package com.lee.yantu.enums;
 public enum SystemEnum implements CodeEnum {
     TOKEN_EXP(-2,"token过期"),
     TOKEN_ERR(-3,"token错误"),
+    TOKEN_MISS(-4,"token缺失"),
     UNKNOWN_ERROR(-1,"未定义的错误，请在服务器查看"),
     UPLOAD_TOO_BIG(401,"请上传小于2M的文件"),
     FILE_IS_EMPTY(402,"文件为空，上传失败"),
@@ -17,6 +18,10 @@ public enum SystemEnum implements CodeEnum {
     IDCARD_ERROR(408,"身份证格式错误"),
     VERIFIED(409,"该用户已验证"),
     KEYWORD_ERROR(410,"关键字错误"),
+    FILE_NOT_IMG(411,"图片格式错误(jpg,gif,png,ico,bmp,jpeg)"),
+    FILE_NOT_HTML(412,"请上传Html格式的文件"),
+    NOT_HAVE_AUTHORITY(413,"用户权限不足"),
+
     ;
 
     private Integer code;

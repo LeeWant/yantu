@@ -25,9 +25,9 @@ public class Journal {
 
     private Date creDate;
 
-    private Integer agreeNum;
+    private Integer agreeNum = 0;
 
-    private Integer isDelete;
+    private Integer isDelete = 0;
 
     private Integer isOpen;
 }

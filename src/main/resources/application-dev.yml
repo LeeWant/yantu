@@ -12,4 +12,5 @@ my:
   headPath: ${my.path}
   imgPath: WEB-INF/classes/static/img/
   bannerPath: ${my.path}/banner
+  htmlPath: ${my.path}/html
 

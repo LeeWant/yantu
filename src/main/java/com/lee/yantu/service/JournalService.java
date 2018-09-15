@@ -1,7 +1,12 @@
 package com.lee.yantu.service;
 
 import com.lee.yantu.Entity.Journal;
+import com.lee.yantu.VO.JournalVO;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author: Lee
@@ -10,19 +15,17 @@ import org.springframework.validation.BindingResult;
  */
 public interface JournalService {
 
-    /**
-     * 发布日记
-     * @param journal
-     * @param bindingResult
-     * @param tagIdArr
-     * @return
-     */
-    Journal publishJournal(Journal journal, BindingResult bindingResult,Integer[] tagIdArr);
 
+    JournalVO publishJournal(Integer userId, String title, MultipartFile html, MultipartFile img[], Integer[] tagIdArr,Integer isOpen);
 
-    void delete(Integer journalId);
+    void delete(Integer journalId,HttpServletRequest request);
 
-    Journal getOne(Integer journalId);
+    JournalVO getOne(Integer journalId, HttpServletRequest request);
+
+    List<JournalVO> getAllByUserId(Integer userId,HttpServletRequest request);
+
+    JournalVO changeStatus(Integer journalId,HttpServletRequest request);
+
 
 
 

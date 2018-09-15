@@ -22,6 +22,7 @@ public enum UserEnum implements CodeEnum{
     NICKNAME_EXIST(213,"该昵称已存在"),
     LACK_PARAMETER(214,"缺少参数"),
     USER_NOT_JOINED(215,"该用户没有加入目标游学"),
+    USER_NOT_EXIST(216,"用户不存在"),
     ;
     private Integer code;
 

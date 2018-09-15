@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class YantuApplication  extends SpringBootServletInitializer{//
+public class YantuApplication extends SpringBootServletInitializer{//
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

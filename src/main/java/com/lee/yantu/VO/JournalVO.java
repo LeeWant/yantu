@@ -16,6 +16,8 @@ public class JournalVO {
 
     private String url;
 
+    private String html;
+
     private Integer agreeNum;
 
     private Integer commentNum;

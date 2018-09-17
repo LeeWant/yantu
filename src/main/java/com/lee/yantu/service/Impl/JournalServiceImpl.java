@@ -122,9 +122,9 @@ public class JournalServiceImpl implements JournalService {
         Token token = JWT.getTokenInstance(request.getHeader("token"));
         if (journal == null)
             throw new ResultException(SystemEnum.NOT_FOUND);
-        if (journal.getIsOpen() == 0 && token.getUserId() == journal.getUserId())
+        if (journal.getIsOpen() == 1)
             return VOUtil.getJournalVO(journal, tagRepository, commentRepository, userRepository);
-        else if (journal.getIsOpen() == 1)
+        else if (journal.getIsOpen() == 0 && token.getUserId() == journal.getUserId())
             return VOUtil.getJournalVO(journal, tagRepository, commentRepository, userRepository);
         else throw new ResultException(SystemEnum.NOT_HAVE_AUTHORITY);
     }

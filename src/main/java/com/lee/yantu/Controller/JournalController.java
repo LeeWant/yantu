@@ -27,7 +27,7 @@ public class JournalController {
     }
 
     @GetMapping("/journal/{journalId}")
-    public Result get(@PathVariable Integer journalId,
+    public Result getOne(@PathVariable Integer journalId,
                       HttpServletRequest request){
         return ResultUtil.success(journalService.getOne(journalId,request));
     }

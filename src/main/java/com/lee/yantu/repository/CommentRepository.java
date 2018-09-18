@@ -14,7 +14,7 @@ public interface CommentRepository extends JpaRepository<Comment,Integer> {
 
     Integer countCommentByJournalIdAndIsDelete(Integer journalId,Integer isDelete);
 
-//    List<Comment> findAllByJournalIdAndIsDelete(Integer journalId,Integer isDelete);
+    List<Comment> findAllByJournalIdAndIsDelete(Integer journalId,Integer isDelete);
 
     Page<Comment> findAllByYoosureIdAndIsDelete(Pageable pageable, Integer yoosureId,Integer isDelete);
 

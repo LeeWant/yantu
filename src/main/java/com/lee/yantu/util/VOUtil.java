@@ -90,13 +90,14 @@ public class VOUtil {
 
     /**
      * 封装一个journalVO
+     *
      * @param journal
      * @param tagRepository
      * @param commentRepository
      * @param userRepository
      * @return
      */
-    public static JournalVO getJournalVO(Journal journal, TagRepository tagRepository, CommentRepository commentRepository, UserRepository userRepository) {
+    public static JournalVO getJournalVO(Journal journal, String htmlPath, TagRepository tagRepository, CommentRepository commentRepository, UserRepository userRepository) {
         User user = userRepository.findOne(journal.getUserId());
         JournalVO journalVO = new JournalVO();
         //封装标签
@@ -108,13 +109,43 @@ public class VOUtil {
             tagVOS.add(tagVO);
         }
         //封装VO
-        BeanUtils.copyProperties(journal,journalVO);
+        BeanUtils.copyProperties(journal, journalVO);
         //评论数
-        journalVO.setCommentNum(commentRepository.countCommentByJournalIdAndIsDelete(journal.getJournalId(),0));
+        journalVO.setCommentNum(commentRepository.countCommentByJournalIdAndIsDelete(journal.getJournalId(), 0));
         journalVO.setTagVOS(tagVOS);
         journalVO.setUserName(user.getNickName());
         journalVO.setUrl(journal.getContent());
+        journalVO.setFilePath(journalVO.getUrl().substring(0, 13));
+        //封装commentVO
+        List<Comment> commentList = commentRepository.findAllByJournalIdAndIsDelete(journal.getJournalId(), 0);
+        journalVO.setCommentVOS(getCommentVOS(commentList, userRepository));
+        if (null != htmlPath && !"".equals(htmlPath))
+            journalVO.setHtml(HtmlUtil.HtmlToString(htmlPath + File.separator + journalVO.getUrl()));
         return journalVO;
+    }
+
+    public static JournalVO getJournalVO(Journal journal, TagRepository tagRepository, CommentRepository commentRepository, UserRepository userRepository) {
+        return getJournalVO(journal, "", tagRepository, commentRepository, userRepository);
+    }
+
+    /**
+     * 获取一个CommentVOS
+     *
+     * @param comments
+     * @return
+     */
+    public static List<CommentVO> getCommentVOS(List<Comment> comments, UserRepository userRepository) {
+        List<CommentVO> commentVOS = new ArrayList<>();
+        for (Comment comment :
+                comments) {
+            CommentVO commentVO = new CommentVO();
+            User user = userRepository.findOne(comment.getUserId());
+            BeanUtils.copyProperties(comment, commentVO);
+            commentVO.setNickName(user.getNickName());
+            commentVO.setHeadImg(user.getHeadImg());
+            commentVOS.add(commentVO);
+        }
+        return commentVOS;
     }
 
     /**

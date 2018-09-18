@@ -8,10 +8,7 @@ import com.lee.yantu.enums.UserEnum;
 import com.lee.yantu.exception.ResultException;
 import com.lee.yantu.repository.*;
 import com.lee.yantu.service.JournalService;
-import com.lee.yantu.util.JWT;
-import com.lee.yantu.util.PageUtil;
-import com.lee.yantu.util.UploadUtil;
-import com.lee.yantu.util.VOUtil;
+import com.lee.yantu.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +64,7 @@ public class JournalServiceImpl implements JournalService {
         //新建文件的路径
         String htmlNewPath = htmlPath + File.separator + journal.getCreDate().getTime();
         //上传html
-        journal.setContent(journal.getCreDate().getTime()+"/"+UploadUtil.uploadHtml(html, htmlNewPath));
+        journal.setContent(journal.getCreDate().getTime() + "/" + UploadUtil.uploadHtml(html, htmlNewPath));
         journal = journalRepository.save(journal);
         //上传tag标记(需要journalId)
         //判断是否有标签信息传入
@@ -91,18 +88,18 @@ public class JournalServiceImpl implements JournalService {
                 imgRepository.save(new Img(journal.getJournalId(), null, UploadUtil.uploadImgByOldName(img, htmlNewPath), 3));
             }
         }
-        JournalVO journalVO = VOUtil.getJournalVO(journal, tagRepository, commentRepository, userRepository);
+        JournalVO journalVO = VOUtil.getJournalVO(journal,htmlPath, tagRepository, commentRepository, userRepository);
         return journalVO;
     }
 
     @Override
-    public void delete(Integer journalId,HttpServletRequest request) {
+    public void delete(Integer journalId, HttpServletRequest request) {
         Journal journal = journalRepository.findOne(journalId);
         //解密token
         Token token = JWT.getTokenInstance(request.getHeader("token"));
-        if(journal.getUserId() != token.getUserId())
+        if (journal.getUserId() != token.getUserId())
             throw new ResultException(SystemEnum.NOT_HAVE_AUTHORITY);
-        if (journal == null)
+        if (journal == null || journal.getIsDelete() == 1)
             throw new ResultException(SystemEnum.NOT_FOUND);
         journal.setIsDelete(1);
         journalRepository.save(journal);
@@ -120,13 +117,13 @@ public class JournalServiceImpl implements JournalService {
         Journal journal = journalRepository.findOne(journalId);
         //解密token
         Token token = JWT.getTokenInstance(request.getHeader("token"));
-        if (journal == null)
+        if (journal == null || journal.getIsDelete() == 1)
             throw new ResultException(SystemEnum.NOT_FOUND);
-        if (journal.getIsOpen() == 1)
-            return VOUtil.getJournalVO(journal, tagRepository, commentRepository, userRepository);
-        else if (journal.getIsOpen() == 0 && token.getUserId() == journal.getUserId())
-            return VOUtil.getJournalVO(journal, tagRepository, commentRepository, userRepository);
-        else throw new ResultException(SystemEnum.NOT_HAVE_AUTHORITY);
+        if (journal.getIsOpen() == 1) {
+            return VOUtil.getJournalVO(journal, htmlPath, tagRepository, commentRepository, userRepository);
+        } else if (journal.getIsOpen() == 0 && token.getUserId() == journal.getUserId()) {
+            return VOUtil.getJournalVO(journal, htmlPath, tagRepository, commentRepository, userRepository);
+        } else throw new ResultException(SystemEnum.NOT_HAVE_AUTHORITY);
     }
 
     /**
@@ -146,7 +143,7 @@ public class JournalServiceImpl implements JournalService {
         List<JournalVO> journalVOS = new ArrayList<>();
         //封装JournalVO
         for (Journal journal : journals) {
-            JournalVO journalVO = VOUtil.getJournalVO(journal,tagRepository,commentRepository,userRepository);
+            JournalVO journalVO = VOUtil.getJournalVO(journal,tagRepository, commentRepository, userRepository);
             journalVOS.add(journalVO);
         }
         return journalVOS;
@@ -154,6 +151,7 @@ public class JournalServiceImpl implements JournalService {
 
     /**
      * 改变手账状态
+     *
      * @param journalId
      * @param request
      */
@@ -162,13 +160,13 @@ public class JournalServiceImpl implements JournalService {
         //解密token
         Token token = JWT.getTokenInstance(request.getHeader("token"));
         Journal journal = journalRepository.findOne(journalId);
-        if(journal == null)
+        if (journal == null || journal.getIsDelete() == 1)
             throw new ResultException(SystemEnum.NOT_FOUND);
-        if(journal.getUserId() != token.getUserId())
+        if (journal.getUserId() != token.getUserId())
             throw new ResultException(SystemEnum.NOT_HAVE_AUTHORITY);
-        if(journal.getIsOpen() == 1)
+        if (journal.getIsOpen() == 1)
             journal.setIsOpen(0);
         else journal.setIsOpen(1);
-        return VOUtil.getJournalVO(journalRepository.save(journal),tagRepository,commentRepository,userRepository);
+        return VOUtil.getJournalVO(journalRepository.save(journal), tagRepository, commentRepository, userRepository);
     }
 }

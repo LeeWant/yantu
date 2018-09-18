@@ -11,4 +11,5 @@ public interface JournalRepository extends JpaRepository<Journal,Integer> {
 
     List<Journal> findAllByUserIdAndIsDelete(Integer userId, Integer isDelete);
 
+    Journal findByJournalIdAndIsDelete(Integer journalId,Integer isDelete);
 }

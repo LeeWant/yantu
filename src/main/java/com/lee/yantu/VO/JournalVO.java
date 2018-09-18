@@ -14,6 +14,8 @@ public class JournalVO {
 
     private String title;
 
+    private String filePath;
+
     private String url;
 
     private String html;
@@ -25,4 +27,6 @@ public class JournalVO {
     private Integer isOpen;
 
     private List<TagVO> tagVOS;
+
+    private List<CommentVO> commentVOS;
 }

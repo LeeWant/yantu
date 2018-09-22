@@ -1,7 +1,9 @@
 package com.lee.yantu.service.Impl;
 
 import com.lee.yantu.Entity.*;
+import com.lee.yantu.VO.JournalSimpleVO;
 import com.lee.yantu.VO.JournalVO;
+import com.lee.yantu.VO.PageVO;
 import com.lee.yantu.VO.TagVO;
 import com.lee.yantu.enums.SystemEnum;
 import com.lee.yantu.enums.UserEnum;
@@ -168,5 +170,11 @@ public class JournalServiceImpl implements JournalService {
             journal.setIsOpen(0);
         else journal.setIsOpen(1);
         return VOUtil.getJournalVO(journalRepository.save(journal), tagRepository, commentRepository, userRepository);
+    }
+
+    @Override
+    public PageVO<JournalSimpleVO> getByPage(Integer page) {
+        Page<Journal> journalPage = journalRepository.findByIsOpenAndIsDelete(PageUtil.basicPage(page,15,"creDate"),1,0);
+        return VOUtil.getJournalSimpleVOS(journalPage,userRepository);
     }
 }

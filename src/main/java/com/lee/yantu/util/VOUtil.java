@@ -34,6 +34,7 @@ public class VOUtil {
         List<YoosureSimpleVO> yoosureSimpleVOS = new ArrayList<>();
         for (Yoosure yoosure : yoosures) {
             //封装标签
+            User user = userService.findOne(yoosure.getUserId());
             List<TagVO> tagVOS = new ArrayList<>();
             tags = tagService.findAllByYoosureId(yoosure.getYoosureId());
             for (Tag tag : tags) {
@@ -43,7 +44,8 @@ public class VOUtil {
             }
             YoosureSimpleVO yoosureSimpleVO = new YoosureSimpleVO();
             //封装user头像
-            yoosureSimpleVO.setHeadImg(userService.findOne(yoosure.getUserId()).getHeadImg());
+            yoosureSimpleVO.setHeadImg(user.getHeadImg());
+            yoosureSimpleVO.setNickName(user.getNickName());
             //封装tagVOS
             yoosureSimpleVO.setTagVOS(tagVOS);
             //复制yoosure
@@ -69,6 +71,7 @@ public class VOUtil {
      */
     public static YoosureSimpleVO getYoosureSimpleVO(Yoosure yoosure, TagRepository tagRepository, UserRepository userRepository) {
         List<Tag> tags;
+        User user = userRepository.findOne(yoosure.getUserId());
         //封装标签
         tags = tagRepository.findAllByYoosureId(yoosure.getYoosureId());
         List<TagVO> tagVOS = new ArrayList<>();
@@ -79,7 +82,8 @@ public class VOUtil {
         }
         YoosureSimpleVO yoosureSimpleVO = new YoosureSimpleVO();
         //封装user头像
-        yoosureSimpleVO.setHeadImg(userRepository.findOne(yoosure.getUserId()).getHeadImg());
+        yoosureSimpleVO.setHeadImg(user.getHeadImg());
+        yoosureSimpleVO.setNickName(user.getNickName());
         //封装tagVOS
         yoosureSimpleVO.setTagVOS(tagVOS);
         //复制yoosure
@@ -195,5 +199,26 @@ public class VOUtil {
         //复制信息到VO
         BeanUtils.copyProperties(user, userVO);
         return userVO;
+    }
+
+    /**
+     * 获取Journals
+     * @param journals
+     * @param userRepository
+     * @return
+     */
+    public static PageVO<JournalSimpleVO> getJournalSimpleVOS(Page<Journal> journals,UserRepository userRepository){
+        PageVO<JournalSimpleVO> journalSimpleVOPageVO = new PageVO<>();
+        BeanUtils.copyProperties(journals,journalSimpleVOPageVO);
+        List<JournalSimpleVO> journalSimpleVOS = new ArrayList<>();
+        for (Journal journal : journals){
+            User user = userRepository.findOne(journal.getUserId());
+            JournalSimpleVO journalSimpleVO = new JournalSimpleVO();
+            BeanUtils.copyProperties(user,journalSimpleVO);
+            BeanUtils.copyProperties(journal,journalSimpleVO);
+            journalSimpleVOS.add(journalSimpleVO);
+        }
+        journalSimpleVOPageVO.setVOS(journalSimpleVOS);
+        return journalSimpleVOPageVO;
     }
 }

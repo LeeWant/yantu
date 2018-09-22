@@ -26,6 +26,11 @@ public class JournalController {
         return ResultUtil.success(journalService.publishJournal(userId,title,html,img,tagIdArr,isOpen));
     }
 
+    @PostMapping("journals")
+    public Result getByPage(@RequestParam Integer page){
+        return ResultUtil.success(journalService.getByPage(page));
+    }
+
     @GetMapping("/journal/{journalId}")
     public Result getOne(@PathVariable Integer journalId,
                       HttpServletRequest request){

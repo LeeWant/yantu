@@ -1,7 +1,9 @@
 package com.lee.yantu.service;
 
 import com.lee.yantu.Entity.Journal;
+import com.lee.yantu.VO.JournalSimpleVO;
 import com.lee.yantu.VO.JournalVO;
+import com.lee.yantu.VO.PageVO;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +28,7 @@ public interface JournalService {
 
     JournalVO changeStatus(Integer journalId,HttpServletRequest request);
 
-
+    PageVO<JournalSimpleVO> getByPage(Integer page);
 
 
 }

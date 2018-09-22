@@ -2,6 +2,7 @@ package com.lee.yantu.VO;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,6 +20,8 @@ public class JournalVO {
     private String url;
 
     private String html;
+
+    private Date creDate;
 
     private Integer agreeNum;
 

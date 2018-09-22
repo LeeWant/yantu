@@ -12,6 +12,8 @@ public class YoosureSimpleVO {
     private Integer yoosureId;
     /** 用户头像 */
     private String headImg;
+    /** 用户昵称 */
+    private String nickName;
     /** 目的地 */
     private String targetSchool;
     /** 出发日期 */

@@ -18,7 +18,7 @@ import java.util.List;
 public interface JournalService {
 
 
-    JournalVO publishJournal(Integer userId, String title, MultipartFile html, MultipartFile img[], Integer[] tagIdArr,Integer isOpen);
+    JournalVO publishJournal(Integer userId, String title, MultipartFile html, List<MultipartFile> imgs, Integer[] tagIdArr,Integer isOpen);
 
     void delete(Integer journalId,HttpServletRequest request);
 
@@ -28,7 +28,7 @@ public interface JournalService {
 
     JournalVO changeStatus(Integer journalId,HttpServletRequest request);
 
-    PageVO<JournalSimpleVO> getByPage(Integer page);
+    PageVO<JournalVO> getByPage(Integer page);
 
 
 }

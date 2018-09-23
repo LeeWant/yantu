@@ -11,6 +11,8 @@ public class JournalVO {
 
     private String userName;
 
+    private String headImg;
+
     private Integer userId;
 
     private String title;

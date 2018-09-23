@@ -120,9 +120,11 @@ public class VOUtil {
         journalVO.setUserName(user.getNickName());
         journalVO.setUrl(journal.getContent());
         journalVO.setFilePath(journalVO.getUrl().substring(0, 13));
+        journalVO.setHeadImg(user.getHeadImg());
         //封装commentVO
         List<Comment> commentList = commentRepository.findAllByJournalIdAndIsDelete(journal.getJournalId(), 0);
         journalVO.setCommentVOS(getCommentVOS(commentList, userRepository));
+        //修改路径，防止文件错误
         if (null != htmlPath && !"".equals(htmlPath))
             journalVO.setHtml(HtmlUtil.HtmlToString(htmlPath + File.separator + journalVO.getUrl()));
         return journalVO;
@@ -200,6 +202,19 @@ public class VOUtil {
         BeanUtils.copyProperties(user, userVO);
         return userVO;
     }
+    //分页获取详细Journal信息
+    public static PageVO<JournalVO> getJournalVOS(Page<Journal> journals,String htmlPath,TagRepository tagRepository,CommentRepository commentRepository,UserRepository userRepository){
+        PageVO<JournalVO> journalVOPageVO = new PageVO<>();
+        BeanUtils.copyProperties(journals,journalVOPageVO);
+        List<JournalVO> journalVOS = new ArrayList<>();
+        for(Journal journal:journals){
+            JournalVO journalVO = VOUtil.getJournalVO(journal,htmlPath,tagRepository,commentRepository,userRepository);
+            journalVOS.add(journalVO);
+        }
+        journalVOPageVO.setVOS(journalVOS);
+        return journalVOPageVO;
+    }
+
 
     /**
      * 获取Journals

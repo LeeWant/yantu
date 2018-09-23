@@ -48,7 +48,7 @@ public class JournalServiceImpl implements JournalService {
     public JournalVO publishJournal(Integer userId,
                                     String title,
                                     MultipartFile html,
-                                    MultipartFile[] imgs,
+                                    List<MultipartFile> imgs,
                                     Integer[] tagIdArr,
                                     Integer isOpen) {
         User user = userRepository.findOne(userId);
@@ -145,7 +145,7 @@ public class JournalServiceImpl implements JournalService {
         List<JournalVO> journalVOS = new ArrayList<>();
         //封装JournalVO
         for (Journal journal : journals) {
-            JournalVO journalVO = VOUtil.getJournalVO(journal,tagRepository, commentRepository, userRepository);
+            JournalVO journalVO = VOUtil.getJournalVO(journal,htmlPath,tagRepository, commentRepository, userRepository);
             journalVOS.add(journalVO);
         }
         return journalVOS;
@@ -169,12 +169,13 @@ public class JournalServiceImpl implements JournalService {
         if (journal.getIsOpen() == 1)
             journal.setIsOpen(0);
         else journal.setIsOpen(1);
-        return VOUtil.getJournalVO(journalRepository.save(journal), tagRepository, commentRepository, userRepository);
+        return VOUtil.getJournalVO(journalRepository.save(journal),htmlPath, tagRepository, commentRepository, userRepository);
     }
 
     @Override
-    public PageVO<JournalSimpleVO> getByPage(Integer page) {
+    public PageVO<JournalVO> getByPage(Integer page) {
         Page<Journal> journalPage = journalRepository.findByIsOpenAndIsDelete(PageUtil.basicPage(page,15,"creDate"),1,0);
-        return VOUtil.getJournalSimpleVOS(journalPage,userRepository);
+        PageVO<JournalVO> journalVOPageVO = VOUtil.getJournalVOS(journalPage,htmlPath,tagRepository,commentRepository,userRepository);
+        return journalVOPageVO;
     }
 }

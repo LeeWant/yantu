@@ -1,13 +1,18 @@
 package com.lee.yantu.service;
 
 import com.lee.yantu.Entity.Yoosure;
+import com.lee.yantu.VO.YoosureSimpleVO;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
 public interface YoosureService {
+
+    YoosureSimpleVO agreeAddOne(Integer id,HttpServletRequest request );
+
     Yoosure save(Yoosure yoosure);
 
     Yoosure publishYoosure(Yoosure yoosure,BindingResult bindingResult,Integer[] tagIdArr);

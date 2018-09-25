@@ -44,6 +44,16 @@ public class JournalServiceImpl implements JournalService {
     private String htmlPath;
 
     @Override
+    public JournalVO agreeAddOne(Integer journalId,HttpServletRequest request) {
+        Journal journal = journalRepository.getOne(journalId);
+        if(journal == null)
+            throw new ResultException(SystemEnum.NOT_FOUND);
+        journal.setAgreeNum(journal.getAgreeNum()+1);
+        journalRepository.save(journal);
+        return getOne(journalId,request);
+    }
+
+    @Override
     @Transactional
     public JournalVO publishJournal(Integer userId,
                                     String title,

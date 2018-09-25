@@ -3,16 +3,19 @@ package com.lee.yantu.Controller;
 
 import com.lee.yantu.Entity.SystemTag;
 import com.lee.yantu.service.ImgService;
+import com.lee.yantu.service.JournalService;
 import com.lee.yantu.service.TagService;
 import com.lee.yantu.VO.Result;
 import com.lee.yantu.VO.TagVO;
 import com.lee.yantu.enums.SystemEnum;
 import com.lee.yantu.exception.ResultException;
+import com.lee.yantu.service.YoosureService;
 import com.lee.yantu.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,10 @@ public class UtilController {
     private ImgService utilService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private JournalService journalService;
+    @Autowired
+    private YoosureService yoosureService;
 
     /**
      * 上传图片，不适用于用户头像的上传
@@ -38,6 +45,24 @@ public class UtilController {
                             @RequestParam("id") Integer id) {
         String imgName = utilService.uploadImg(img, id, flag);
         return ResultUtil.success(imgName);
+    }
+
+    /**
+     * 点赞
+     * @param key
+     * @param id
+     * @param request
+     * @return
+     */
+    @PostMapping("/{key}/agree/{id}")
+    public Result agreeAdd(@PathVariable String key,
+                           @PathVariable Integer id,
+                           HttpServletRequest request) {
+        if ("journal".equals(key)) {
+            return ResultUtil.success(journalService.agreeAddOne(id,request));
+        } else if ("yoosure".equals(key)) {
+            return ResultUtil.success(yoosureService.agreeAddOne(id,request));
+        } else throw new ResultException(SystemEnum.UNKNOWN_ERROR,"点赞失败");
     }
 
 
@@ -59,6 +84,7 @@ public class UtilController {
                 tagVOList.add(tagVO);
             }
             return ResultUtil.success(tagVOList);
-        }throw new ResultException(SystemEnum.NO_THIS_FLAG);
+        }
+        throw new ResultException(SystemEnum.NO_THIS_FLAG);
     }
 }

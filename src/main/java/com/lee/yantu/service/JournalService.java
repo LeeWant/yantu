@@ -18,6 +18,8 @@ import java.util.List;
 public interface JournalService {
 
 
+    JournalVO agreeAddOne(Integer journalId,HttpServletRequest request);
+
     JournalVO publishJournal(Integer userId, String title, MultipartFile html, List<MultipartFile> imgs, Integer[] tagIdArr,Integer isOpen);
 
     void delete(Integer journalId,HttpServletRequest request);

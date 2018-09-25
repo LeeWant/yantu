@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,9 +22,24 @@ public class JournalController {
     public Result add(@RequestParam Integer userId,
                       @RequestParam String title,
                       @RequestParam MultipartFile html,
-                      @RequestParam(required = false) List<MultipartFile> img,
+                      @RequestParam(required = false) MultipartFile img1,
+                      @RequestParam(required = false) MultipartFile img2,
+                      @RequestParam(required = false) MultipartFile img3,
+                      @RequestParam(required = false) MultipartFile img4,
+                      @RequestParam(required = false) MultipartFile img5,
                       @RequestParam(required = false) Integer[] tagIdArr,
                       @RequestParam Integer isOpen){
+        List<MultipartFile> img = new ArrayList<>();
+        if(img1 != null)
+            img.add(img1);
+        if(img2 != null)
+            img.add(img2);
+        if(img3 != null)
+            img.add(img3);
+        if(img4 != null)
+            img.add(img4);
+        if(img5 != null)
+            img.add(img5);
         return ResultUtil.success(journalService.publishJournal(userId,title,html,img,tagIdArr,isOpen));
     }
 

@@ -1,6 +1,7 @@
 package com.lee.yantu.service.Impl;
 
 import com.lee.yantu.Entity.*;
+import com.lee.yantu.VO.YoosureSimpleVO;
 import com.lee.yantu.enums.SystemEnum;
 import com.lee.yantu.repository.*;
 import com.lee.yantu.service.YoosureService;
@@ -9,12 +10,14 @@ import com.lee.yantu.enums.UserEnum;
 import com.lee.yantu.enums.YoosureEnum;
 import com.lee.yantu.exception.ResultException;
 import com.lee.yantu.util.PageUtil;
+import com.lee.yantu.util.VOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,20 @@ public class YoosureServiceImpl implements YoosureService {
     private SystemTagRepository systemTagRepository;
     @Autowired
     private TagRepository tagRepository;
+
+    /**
+     * 点赞
+     * @param id
+     * @param request
+     * @return
+     */
+    @Override
+    public YoosureSimpleVO agreeAddOne(Integer id, HttpServletRequest request) {
+        Yoosure yoosure = yoosureRepository.getOne(id);
+        yoosure.setAgreeNum(yoosure.getAgreeNum()+1);
+        yoosure = yoosureRepository.save(yoosure);
+        return VOUtil.getYoosureSimpleVO(yoosure,tagRepository,userRepository);
+    }
 
     /**
      * 保存yoosure

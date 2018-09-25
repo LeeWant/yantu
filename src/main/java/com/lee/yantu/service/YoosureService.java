@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface YoosureService {
 
+    Page<Yoosure> getPageByAgreeNum(Integer page);
+
     YoosureSimpleVO agreeAddOne(Integer id,HttpServletRequest request );
 
     Yoosure save(Yoosure yoosure);

@@ -18,6 +18,7 @@ import java.util.List;
 public interface JournalService {
 
 
+
     JournalVO agreeAddOne(Integer journalId,HttpServletRequest request);
 
     JournalVO publishJournal(Integer userId, String title, MultipartFile html, List<MultipartFile> imgs, Integer[] tagIdArr,Integer isOpen);
@@ -31,6 +32,8 @@ public interface JournalService {
     JournalVO changeStatus(Integer journalId,HttpServletRequest request);
 
     PageVO<JournalVO> getByPage(Integer page);
+
+    PageVO<JournalVO> getByPageByAgreeNum(Integer page);
 
 
 }

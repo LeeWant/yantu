@@ -3,6 +3,7 @@ package com.lee.yantu.Controller;
 
 import com.lee.yantu.VO.Result;
 import com.lee.yantu.service.Impl.JournalServiceImpl;
+import com.lee.yantu.service.JournalService;
 import com.lee.yantu.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.List;
 public class JournalController {
 
     @Autowired
-    JournalServiceImpl journalService;
+    JournalService journalService;
 
     @PostMapping("/journal")
     public Result add(@RequestParam Integer userId,
@@ -43,9 +44,18 @@ public class JournalController {
         return ResultUtil.success(journalService.publishJournal(userId,title,html,img,tagIdArr,isOpen));
     }
 
+    /**
+     * 分页获取手账
+     * @param page
+     * @param isByAgreeNum
+     * @return
+     */
     @PostMapping("journals")
-    public Result getByPage(@RequestParam Integer page){
-        return ResultUtil.success(journalService.getByPage(page));
+    public Result getByPageByAgreeNum(@RequestParam Integer page,
+                                      @RequestParam(required = false) Integer isByAgreeNum){
+        if (isByAgreeNum == 1)
+            return ResultUtil.success(journalService.getByPageByAgreeNum(page));
+        else return ResultUtil.success(journalService.getByPage(page));
     }
 
     @GetMapping("/journal/{journalId}")

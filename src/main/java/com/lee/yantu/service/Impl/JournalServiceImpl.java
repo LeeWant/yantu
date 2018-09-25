@@ -188,4 +188,11 @@ public class JournalServiceImpl implements JournalService {
         PageVO<JournalVO> journalVOPageVO = VOUtil.getJournalVOS(journalPage,htmlPath,tagRepository,commentRepository,userRepository);
         return journalVOPageVO;
     }
+
+    @Override
+    public PageVO<JournalVO> getByPageByAgreeNum(Integer page) {
+        Page<Journal> journalPage = journalRepository.findByIsOpenAndIsDelete(PageUtil.basicPage(page,15,"agreeNum"),1,0);
+        PageVO<JournalVO> journalVOPageVO = VOUtil.getJournalVOS(journalPage,htmlPath,tagRepository,commentRepository,userRepository);
+        return journalVOPageVO;
+    }
 }

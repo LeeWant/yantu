@@ -39,6 +39,12 @@ public class YoosureServiceImpl implements YoosureService {
     @Autowired
     private TagRepository tagRepository;
 
+    @Override
+    public Page<Yoosure> getPageByAgreeNum(Integer page) {
+        Page<Yoosure> yoosures = yoosureRepository.findAllByIsFinishAndIsDelete(PageUtil.basicPage(page, 15, new SortDto("ASC", "agreeNum")), 0,0);
+        return yoosures;
+    }
+
     /**
      * 点赞
      * @param id

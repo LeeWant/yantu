@@ -179,9 +179,18 @@ public class YoosureController {
      * @return
      */
     @GetMapping("/getAll/pg-{page}")
-    public Result getAll(@PathVariable("page") Integer page) {
+    public Result getAll(@PathVariable Integer page) {
         //封装数据
         Page<Yoosure> yoosures = yoosureService.getPage(page);
         return ResultUtil.success(VOUtil.getYoosurePageVO(yoosures,tagService,userService));
     }
+
+    @GetMapping("/getAllByAgreeNum/pg-{page}")
+    public Result getAllByAgreeNum(@PathVariable Integer page){
+        Page<Yoosure> yoosures = yoosureService.getPageByAgreeNum(page);
+        return ResultUtil.success(VOUtil.getYoosurePageVO(yoosures,tagService,userService));
+    }
+
+
+
 }
